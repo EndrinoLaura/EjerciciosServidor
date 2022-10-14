@@ -23,10 +23,15 @@ $numeros = (isset ($_POST['numeros'])) ? $_POST['numeros'] : [];
 	sort($numeros);
     foreach($numeros as $k => $v) {
         $res = intdiv($v,10);
+        $fila ="";
         for($i=0; $i<$res; $i++){
-            echo "*";
+            $fila.="*";
         }
-        echo $v . "<br>";
+        echo sprintf(" [%-12s]\n               |%+4d|\n",
+            $fila,
+            $v,
+        );
+        echo "<br>";
     }
 ?>
 
