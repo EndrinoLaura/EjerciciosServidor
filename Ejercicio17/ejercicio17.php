@@ -1,5 +1,8 @@
+<!--Crear un cronómetro con 3 botones, uno start, otro reset y otro stop. Que tenga un formato típico hooras:minutos:segundos. 
+El boton start no reiniciará el cronómetro sino que al pulsar stop detendrá la cuenta y start la reiniciará donde se paró.
+-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
