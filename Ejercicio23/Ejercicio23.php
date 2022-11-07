@@ -14,25 +14,26 @@ EJEMPLO VISTA WEB:
 
 <?
     //Abrimos el archivos como modo lectura-escritura; ademas crear el fichero si no existe, y si existe, que no borre el contenido (fopen c+ hace esto).
-    $fvisitas = fopen("fvisitas.txt"),"c+";
+    $fvisitas = fopen("fvisitas.txt","c+");
 
     //Si esque existe tengo que leer el archivo. (tengo que saber como está guardada la info para asi poderla leer). 
     //(fgets/fwrite (lo que era antes fputs pero sin salto de linea)) (al texto que yo escriba tengo que añadir un salto de linea ya que fwrite no lo hace)
     $fechas = unserialize(fgets($fvisitas));
     $ips = unserialize(fgets($fvisitas));
-    $fclose($fvisitas);
+    fclose($fvisitas);
 
     //Crea en el array si no exista, y en el caso de que no exista me crea el elemento.
-    $fechas[date('d-m-y')]+=1];
-    $ips(SERVER['REMOTE_ADDR'])+=1;
+    $fechas[date('d-m-y')]+=1;
+    $ips[$_SERVER['REMOTE_ADDR']]+=1;
 
     //Visitas totales
     $totalv = array_sum($fechas); //suma valores de un array
     echo "Totales= ".$totalv.'<br>';
 
     //Visitas únicas
-    $totalu = count($ips);
-    foreach ($fechas as $fehca=>$numero){
+    $totalu = count($ips).'<br>';
+    echo "Unicas= ".$totalu.'<br>';
+    foreach ($fechas as $fecha=>$numero){
         echo $fecha ." = ".$numero.'<br>';
     }
 
