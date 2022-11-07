@@ -12,48 +12,38 @@ EJEMPLO VISTA WEB:
 
 -->
 
-<? 
-    //SI EL FICHERO EXISTE CARGO EL ARRAY, SI NO EXISTE CREO EL FICHERO Y CREO EL ARRAY
-    if(!file_exists("E:/visitas.txt")){
-        $fic = fopen("E:/visitas.txt","w");
-        $array = ["ip" => [],"fechas" => []];
-        fwrite($fic,serialize($array));
-    }else{
-        $fic = fopen("E:/visitas.txt","r");
-        $array = unserialize(fread($fic, filesize("E:/visitas.txt")));
-    }
-    //CIERRO EL FICHERO
-    fclose($fic);
+<?
+    //Abrimos el archivos como modo lectura-escritura; ademas crear el fichero si no existe, y si existe, que no borre el contenido (fopen c+ hace esto).
+    $fvisitas = fopen("fvisitas.txt"),"c+";
 
-    //SI LA IP NO EXISTE EN EL ARRAY
-    if(!in_array($_SERVER["REMOTE_ADDR"],$array["ip"])){
-        array_push($array["ip"],$_SERVER["REMOTE_ADDR"]);
-    }
+    //Si esque existe tengo que leer el archivo. (tengo que saber como está guardada la info para asi poderla leer). 
+    //(fgets/fwrite (lo que era antes fputs pero sin salto de linea)) (al texto que yo escriba tengo que añadir un salto de linea ya que fwrite no lo hace)
+    $fechas = unserialize(fgets($fvisitas));
+    $ips = unserialize(fgets($fvisitas));
+    $fclose($fvisitas);
 
-//NO ESTA BIEN HECHO
-    //SI LA FECHA NO EXISTE EN EL ARRAY, LA AÑADO Y AUMENTO EL NUMERO DE VISITAS TOTALES Y POR FECHA
-    if(array_key_exists(date("d-m-y"),$array["fechas"])){
-        $array["fechas"][date("d-m-y")]++;
-    }else{
-        $array["fechas"][date("d-m-y")] = 1;
+    //Crea en el array si no exista, y en el caso de que no exista me crea el elemento.
+    $fechas[date('d-m-y')]+=1];
+    $ips(SERVER['REMOTE_ADDR'])+=1;
+
+    //Visitas totales
+    $totalv = array_sum($fechas); //suma valores de un array
+    echo "Totales= ".$totalv.'<br>';
+
+    //Visitas únicas
+    $totalu = count($ips);
+    foreach ($fechas as $fehca=>$numero){
+        echo $fecha ." = ".$numero.'<br>';
     }
 
-    //MUESTRO LOS DATOS
-    foreach($array["fechas"] as $key => $value){
-        $totales += $value;
-    }
-    echo "VISITAS TOTALES: ".$totales."<br>";
-    echo "VISITAS UNICAS: ".count($array["ip"])."<br>";
-    foreach($array["fechas"] as $key => $value){
-        echo $key."=> ".$value."<br>";
-        $totales += $value;
-    }
- 
-    //GUARDO EL ARRAY EN EL FICHERO
-    $fic = fopen("E:visitas.txt","w");
-    fwrite($fic,serialize($array));
-    //CIERRO EL FICHERO
-    fclose($fic);
+    //puedo dejar el archivo abierto y truncar el archivo (borrrar y escribir lo que tengo ahora en los arrays) 
+    //(ftruncate hace esto, le tienes que poner la longitud, pero antes habria que utilizar un flock para que no se pueda escribir antes).
+    $fvisitas = fopen("fvisitas.txt", "w");
+    fwrite($fvisitas, serialize($fechas)."\r\n");
+    fwrite($fvisitas, serialize($ips)."\r\n");
+
+    //cerramos el archivo
+    fclose($fvisitas);
 ?>
 
 
